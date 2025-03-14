@@ -23,7 +23,7 @@ struct OpenedTabFileParser
     {
         const CFB::COMPOUND_FILE_ENTRY* entry = nullptr;
         reader.EnumFiles(reader.GetRootEntry(), -1, 
-            [&](const CFB::COMPOUND_FILE_ENTRY* e, const CFB::utf16string&, int)->void
+            [&](const CFB::COMPOUND_FILE_ENTRY* e, const std::u16string&, int)->void
         {
             if (reader.IsPropertyStream(e))
             {

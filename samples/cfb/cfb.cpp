@@ -132,7 +132,7 @@ void OutputEntryInfo(const CFB::CompoundFileReader& reader, const CFB::COMPOUND_
 const void ListDirectory(const CFB::CompoundFileReader& reader, bool escape)
 {
     reader.EnumFiles(reader.GetRootEntry(), -1, 
-        [&](const CFB::COMPOUND_FILE_ENTRY* entry, const CFB::utf16string& dir, int level)->void
+        [&](const CFB::COMPOUND_FILE_ENTRY* entry, const std::u16string& dir, int level)->void
     {
         bool isDirectory = !reader.IsStream(entry);
         std::string name = UTF16ToUTF8(entry->name);
@@ -146,7 +146,7 @@ const CFB::COMPOUND_FILE_ENTRY* FindStream(const CFB::CompoundFileReader& reader
 {
     const CFB::COMPOUND_FILE_ENTRY* ret = nullptr;
     reader.EnumFiles(reader.GetRootEntry(), -1, 
-        [&](const CFB::COMPOUND_FILE_ENTRY* entry, const CFB::utf16string& u16dir, int level)->void
+        [&](const CFB::COMPOUND_FILE_ENTRY* entry, const std::u16string& u16dir, int level)->void
     {
         if (reader.IsStream(entry))
         {

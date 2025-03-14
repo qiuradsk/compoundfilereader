@@ -132,8 +132,7 @@ struct helper
     }
 };
 
-typedef std::basic_string<uint16_t> utf16string;
-typedef std::function<void(const COMPOUND_FILE_ENTRY*, const utf16string& dir, int level)> 
+typedef std::function<void(const COMPOUND_FILE_ENTRY*, const std::u16string& dir, int level)> 
     EnumFilesCallback;
 
 class CompoundFileReader
@@ -226,7 +225,7 @@ public:
 
     void EnumFiles(const COMPOUND_FILE_ENTRY* entry, int maxLevel, EnumFilesCallback callback) const
     {
-        utf16string dir;
+        std::u16string dir;
         EnumNodes(GetEntry(entry->childID), 0, maxLevel, dir, callback);
     }
 
@@ -234,7 +233,7 @@ private:
 
     // Enum entries with same level, including 'entry' itself
     void EnumNodes(const COMPOUND_FILE_ENTRY* entry, int currentLevel, int maxLevel, 
-        const utf16string& dir, EnumFilesCallback callback) const
+        const std::u16string& dir, EnumFilesCallback callback) const
     {
         if (maxLevel > 0 && currentLevel >= maxLevel)
             return;
@@ -246,10 +245,10 @@ private:
         const COMPOUND_FILE_ENTRY* child = GetEntry(entry->childID);
         if (child != nullptr)
         {
-            utf16string newDir = dir;
+            std::u16string newDir = dir;
             if (dir.length() != 0)
                 newDir.append(1, '\\');
-            newDir.append(entry->name, entry->nameLen / 2 - 1);
+            newDir.append(reinterpret_cast<const char16_t*>(entry->name), entry->nameLen / 2 - 1);
             EnumNodes(GetEntry(entry->childID), currentLevel + 1, maxLevel, newDir, callback);
         }
 
